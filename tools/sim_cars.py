@@ -68,13 +68,21 @@ def run(n_cars, seed, realtime, out=sys.stdout):
         sys.exit("build/parking_sim missing, run make first")
     proc = subprocess.Popen([SIM], stdin=subprocess.PIPE,
                             stdout=out, text=True, bufsize=1)
-    last_t = 0
+    prev = None
     for ev in traffic(n_cars, seed):
-        if realtime:
-            time.sleep((ev[0] - last_t) / 1000.0)
-            last_t = ev[0]
+        if realtime and prev is not None:
+            # The sim only runs up to the newest input time, so keep sending
+            # the current inputs every 200 ms or the gate looks frozen.
+            t = prev[0]
+            while t + 200 < ev[0]:
+                time.sleep(0.2)
+                t += 200
+                proc.stdin.write(fmt((t,) + tuple(prev[1:])))
+                proc.stdin.flush()
+            time.sleep((ev[0] - t) / 1000.0)
         proc.stdin.write(fmt(ev))
         proc.stdin.flush()
+        prev = ev
     proc.stdin.close()
     proc.wait()
 
