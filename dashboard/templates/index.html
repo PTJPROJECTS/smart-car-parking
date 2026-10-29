@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="refresh" content="1">
+  <title>Parking</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    .slots { display: flex; gap: 10px; }
+    .slot { width: 90px; height: 120px; border: 2px solid #444;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; }
+    .taken { background: #e57373; }
+    .free  { background: #81c784; }
+    pre { background: #f2f2f2; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h2>Parking lot</h2>
+  {% if s.free is none %}
+    <p>Waiting for data from the controller...</p>
+  {% else %}
+    <p>Free slots: <b>{{ s.free }}</b> / {{ s.slots|length }}
+       &nbsp; Gate: <b>{{ s.gate }}</b>
+       &nbsp; Turned away (lot full): {{ s.full_count }}</p>
+    <div class="slots">
+      {% for taken in s.slots %}
+        <div class="slot {{ 'taken' if taken else 'free' }}">
+          {{ loop.index }}: {{ 'car' if taken else 'free' }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  <h3>Last messages</h3>
+  <pre>{% for l in s.log %}{{ l }}
+{% endfor %}</pre>
+</body>
+</html>
