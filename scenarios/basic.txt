@@ -1,0 +1,14 @@
+# car arrives, parks in slot 2, later another fills slot 1 and leaves
+0     0000 0 0
+1000  0000 1 0
+# through the gate after 1.5 s
+2500  0000 0 0
+6000  0100 0 0
+9000  0100 1 0
+10200 0100 0 0
+13000 1100 0 0
+# car from slot 1 drives out
+20000 0100 0 0
+22000 0100 0 1
+23000 0100 0 0
+30000 0100 0 0

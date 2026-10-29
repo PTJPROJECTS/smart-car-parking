@@ -1,0 +1,11 @@
+# all four slots taken, a fifth car shows up, then one leaves
+0     1111 0 0
+2000  1111 1 0
+6000  1111 1 0
+# slot 3 car leaves through the exit
+7000  1101 1 1
+8000  1101 1 0
+# waiting car can now get in
+9500  1101 0 0
+14000 1111 0 0
+20000 1111 0 0
